@@ -28,8 +28,16 @@ forward 2")
      (multiply)
      (Math/abs))
 
-
-
-
-
 ; Part 2
+(->> (slurp "resources/2021/day2/input.txt")
+     (string/split-lines)
+     (reduce (fn [acc x]
+               (let [[move raw-value] (string/split x #" ")
+                     value (parseInt raw-value)]
+                 (cond
+                   (= move "forward") (-> acc (update :h + value) (assoc :d (+ (:d acc) (* (:a acc) value))))
+                   (= move "backward") (update acc :h - value)
+                   (= move "up") (update acc :a - value)
+                   (= move "down") (update acc :a + value)))) {:h 0 :d 0 :a 0})
+     (multiply)
+     (Math/abs))
